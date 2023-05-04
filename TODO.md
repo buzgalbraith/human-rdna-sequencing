@@ -1,10 +1,16 @@
 ## TODO
 - read up on  [gff files](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/#basicformat)
+  - [defualt awk spacing](https://stackoverflow.com/questions/30405694/default-field-separator-for-awk) is more than one sapce so when calling awk on .gff files we need to use awk -F '\t' 'normal awk' file to specficy that .gff is tab delineated
+  - specfic [col defenitions](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)
+  - [atrbiute defentions for NCBI](https://genome.ucsc.edu/cgi-bin/hgTables?db=chlSab2&hgta_group=genes&hgta_track=refSeqComposite&hgta_table=ncbiRefSeqOther&hgta_doSchema=describe+table+schema)
+  - a lot of information seems to be in col 3 (type), as well as col 9 (atributes) within 9 we have gbkey (feature type) and  geneBiotype (	Gene biotype) and gene (gene name)
 - find unique values in "gbkeys" section (done)
-- fine unique values in that big 2nd col.  (done)
-- look at which chromosomes have rRNA (like sections )
-- NC vs NW in the first column of each line 
+- find unique values in "gene_biotype" section (done)
+- fine unique values in col 2 source.  (done)
+- fine unique values in col 3 type (done)
+- NC vs NW in the first column of each line (done)
+  - that col is called seq_id it is "The ID of the landmark used to establish the coordinate system for the current feature". will be important if we want to search bassed on actual position in the genome. 
+- look at which chromosomes have rRNA (like sections in the real chromosome )
 - when ever you filter for something try to validate with the opposite 
 - think about overlap regions ie regions where we pull rRNA but there are other reads in that region
-- look into 'gbkey=GENE, gen_biotype=rRNA'
 - look for cds  in gb_key 
