@@ -1,4 +1,4 @@
-## TODO
+## done 
 - read up on  [gff files](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/#basicformat)
   - [defualt awk spacing](https://stackoverflow.com/questions/30405694/default-field-separator-for-awk) is more than one sapce so when calling awk on .gff files we need to use awk -F '\t' 'normal awk' file to specficy that .gff is tab delineated
   - specfic [col defenitions](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)
@@ -9,6 +9,7 @@
 - fine unique values in col 2 source.  (done)
 - fine unique values in col 3 type (done)
 - NC vs NW in the first column of each line (done)
+## TODO
   - that col is called seq_id it is "The ID of the landmark used to establish the coordinate system for the current feature". will be important if we want to search bassed on actual position in the genome. 
 - look at which chromosomes have rRNA (like sections in the real chromosome )
 - when ever you filter for something try to validate with the opposite 
