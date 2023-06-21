@@ -11,11 +11,16 @@ while test $# -gt 0; do
       REFERENCE=$1
       shift
       ;;
+    -n|-name)
+      shift
+      NAME=$1
+      shift
+      ;;
     *)
         break
   esac
 done
-if test -z "$REFERENCE" || test -z "$SAMPLE"
+if test -z "$REFERENCE" || test -z "$SAMPLE" || test -z "$NAME" 
 then
     echo 'reference or sample not provided'
     exit 0
@@ -23,4 +28,5 @@ then
 else
       echo "$REFERENCE"
       echo "$SAMPLE"
+      echo "$NAME"
 fi
