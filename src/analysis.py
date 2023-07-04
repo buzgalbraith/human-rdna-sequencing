@@ -25,14 +25,22 @@ def plot_coverage(file_path: str, cutoff: int = 10000)->pd.DataFrame:
     d['position'] = np.array(d["position"])
     d["coverage"] = np.array(d["coverage"])
     df = pd.DataFrame(d)
+    fig, ax = plt.subplots(2,1)
+    fig.subplots_adjust(wspace=0.6, hspace=0.6)
+    ax[0].scatter(x=d["position"], y=d["coverage"])
+    ax[0].set_ylabel("Log of coverage")
+    ax[0].set_xlabel('Chromosome position')
+    ax[0].set_yscale("log")
+    ax[0].set_title("Coverage over chromosome position")
     frac = np.sum(df["coverage"]>cutoff)/df["coverage"].shape[0]
     sb.histplot(d["coverage"], binwidth=150)
     plt.annotate(text="{0}% of samples have coverage above {1}".format(round(frac*100, 5), cutoff), xy=(.70,1.01), xycoords = 'axes fraction')
-    plt.xlabel('coverage')
-    plt.ylabel('count')
+    plt.xlabel('Coverage')
+    plt.ylabel('Number of occurrences')
     plt.xlim(0, np.mean(df["coverage"])*(1.5))
     plt.title("Coverage frequency")
     plt.show()
+    
     return d
 
 def plot_vcf(file_path):
@@ -46,8 +54,8 @@ def plot_vcf(file_path):
     df = df.dropna()
     edit_func = lambda x : editdistance.eval(x["REF"], x["ALT"])
     ax[0].scatter(y= df["QUAL"], x = df["POS"])
-    ax[0].set_ylabel("PHED Quality score")
-    ax[0].set_xlabel('Chromosome Position')
+    ax[0].set_ylabel("PHED quality score")
+    ax[0].set_xlabel('Chromosome position')
     ax[0].set_title("Quality score over positions")
     x = np.linspace(start = 0, stop=500, num=5)
     ax[0].set_yticks(x, labels=x)
@@ -61,14 +69,16 @@ def plot_vcf(file_path):
 
     ax[1].scatter(data=df,x = "POS",y="EDIT")
     ax[1].set_ylabel("Edit distance")
-    ax[1].set_xlabel('Chromosome Position')
+    ax[1].set_xlabel('Chromosome position')
     ax[1].set_title("Edit distance between reference and alternative bases over positions")
 
     grouped_by_edit = df.groupby(by=["EDIT"], as_index=False).count()
-    print(grouped_by_edit)
     sb.histplot(x=df["EDIT"])
     plt.xlabel("Edit distance")
-    plt.ylabel("Number of occurrences ")
+    plt.ylabel("Number of occurrences")
+    plt.xlim(1,25)
+    plt.xticks(list(range(1,26,2)))
+    plt.title("Edit distance frequency")
     plt.show()
 file_path = 'data/ERR3239481/ERR3239481_rDNA_coverage.txt'
 plot_coverage(file_path=file_path)
