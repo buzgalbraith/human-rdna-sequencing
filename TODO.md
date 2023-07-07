@@ -1,7 +1,4 @@
 ## TODO
-  - index and map (approx 10 files) 
-  - count the number of reads at each postion and make a graph of where the coverage is. 
-  - read [pan human genome paper](https://www.nature.com/articles/s41586-023-05896-x) and look at its data 
-  -  schedule meeting with daniel to start varient calling 
-  - talk with daniel about synthetic datasets, and benchmarking datasets. 
-  - keep looking for the wider rna protype 
+  - check on existing plots (probably remove the edit distance)
+  - add the region of the gene we are looking at to the coverage plot (use snap gene viewer)
+  - on lab share. human rdna project, rdna_prototpye, .ga file has diagram.
