@@ -1,11 +1,24 @@
 
 import matplotlib.pyplot as plt 
+import matplotlib.patches as patches
 import pandas as pd 
 import numpy as np 
 import re
 import seaborn as sb
 import editdistance
-def plot_coverage(file_path: str, cutoff: int = 10000)->pd.DataFrame:
+def get_rRNA_bounds(gb_file_path):
+    gb_file = open(gb_file_path)
+    pattern_1 = r'^\s+rRNA'
+    pattern_2 = r'\d+'
+    points = []
+    for line in gb_file:
+        if re.search(pattern_1, line):
+            send = re.findall(pattern_2, line)
+            points.append([int(send[0]), int(send[1])])
+    return points
+
+
+def plot_coverage(file_path: str, gb_file_path:str, cutoff: int = 10000)->pd.DataFrame:
     """
     TOOD: re-write using pandas to csv
     args: 
@@ -27,11 +40,24 @@ def plot_coverage(file_path: str, cutoff: int = 10000)->pd.DataFrame:
     df = pd.DataFrame(d)
     fig, ax = plt.subplots(2,1)
     fig.subplots_adjust(wspace=0.6, hspace=0.6)
-    ax[0].scatter(x=d["position"], y=d["coverage"])
+    # ax[0].hlines(y=10**3, xmin=0, xmax=np.max(df["position"])*1.1, color='r')
+    # ax[0].hlines(y=10**4, xmin=0, xmax=np.max(df["position"])*1.1, color='r')
+    ax[0].grid()
+    ax[0].scatter(x=d["position"], y=d["coverage"],s=7.5)
     ax[0].set_ylabel("Log of coverage")
     ax[0].set_xlabel('Chromosome position')
     ax[0].set_yscale("log")
     ax[0].set_title("Coverage over chromosome position")
+    #ax[0].vlines(x=3657, ymin = np.min(d["coverage"])/2, ymax = np.max(d["coverage"])*5, color = 'g', label="rRNA start")
+    #ax[0].vlines(x=5527, ymin = np.min(d["coverage"])/2, ymax = np.max(d["coverage"])*5, color = 'g', label="rRNA start")
+    rRNA_positions = get_rRNA_bounds(gb_file_path)
+    for i in range(len(rRNA_positions)):
+        if i==0:
+            rRNA_region = patches.Rectangle((rRNA_positions[i][0], 0), width=rRNA_positions[i][1]-rRNA_positions[i][0], height = np.max(d["coverage"])*100, edgecolor='g', facecolor='green', alpha=.25, label = "rRNA Region")
+        else:
+            rRNA_region = patches.Rectangle((rRNA_positions[i][0], 0), width=rRNA_positions[i][1]-rRNA_positions[i][0], height = np.max(d["coverage"])*100, edgecolor='g', facecolor='green', alpha=.25)
+        ax[0].add_patch(rRNA_region)
+    ax[0].legend()
     frac = np.sum(df["coverage"]>cutoff)/df["coverage"].shape[0]
     sb.histplot(d["coverage"], binwidth=150)
     plt.annotate(text="{0}% of samples have coverage above {1}".format(round(frac*100, 5), cutoff), xy=(.70,1.01), xycoords = 'axes fraction')
@@ -81,6 +107,8 @@ def plot_vcf(file_path):
     plt.title("Edit distance frequency")
     plt.show()
 file_path = 'data/ERR3239481/ERR3239481_rDNA_coverage.txt'
-plot_coverage(file_path=file_path)
-vcf_path = 'data/ERR3239481/ERR3239481_rDNA_1.vcf'
-plot_vcf(file_path=vcf_path)
+plot_coverage(file_path=file_path, gb_file_path='data/ERR3239481/U13369.1_Human_rDNA_repeat_unit.gb')
+# vcf_path = 'data/ERR3239481/ERR3239481_rDNA_1.vcf'
+# plot_vcf(file_path=vcf_path)
+
+
