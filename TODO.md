@@ -5,3 +5,8 @@
   - check on the parameters in synethic data code 
   - keep track of time it takes to run each step in our bash file.
   - fix bug in data generation code. 
+  - in our shared project. there is test reads.
+  - explore the args, keep some of them as adeault.
+  - 1 part for baseline, one part for synethic part. be carefull with the model parameter.
+  - Email Jon and Daniel to ask to set up a meeting, to go over the masking task.
+  -  Review doing this as a capstone, and see if this is aproved. 
